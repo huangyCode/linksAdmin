@@ -2,10 +2,11 @@ import defaultSettings from './defaultSettings'; // https://umijs.org/config/
 
 import slash from 'slash2';
 import themePluginConfig from './themePluginConfig';
-const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
+
+const {pwa} = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
 
-const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION } = process.env;
+const {ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION} = process.env;
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins = [
   ['umi-plugin-antd-icon-config', {}],
@@ -31,11 +32,11 @@ const plugins = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -96,27 +97,86 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/customer',
             },
             {
-              path: '/welcome',
-              name: 'welcome',
+              path: '/customer',
+              name: '用户列表',
               icon: 'smile',
-              component: './Welcome',
-            },
-            {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
+              component: './Customer',
               authority: ['admin'],
             },
             {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list',
-              component: './ListTableList',
+              path: '/account',
+              name: '账户管理',
+              icon: 'smile',
+              component: './Account',
+              authority: ['admin'],
             },
+            {
+              path: '/brand',
+              name: '品牌管理',
+              icon: 'smile',
+              component: './MerchantBrand',
+              authority: ['admin'],
+            },
+            {
+              path: '/product',
+              name: '商品管理',
+              icon: 'smile',
+              children: [
+                {
+                  path: "/product/goods",
+                  name: "商品列表",
+
+                },
+                {
+                  path: "/product/classes",
+                  name: "商品类别",
+                }
+              ],
+              authority: ['admin'],
+            },
+            {
+              path:'/order',
+              name:'订单列表',
+              icon: 'smile',
+              component: './Order',
+              authority: ['admin'],
+            },
+            {
+              path: '/productuser',
+              name: '商品列表',
+              icon: 'smile',
+              component: './ProductUser',
+              authority: ['user'],
+            },
+            {
+              path: '/product/goods',
+              component: './Product'
+            }, {
+              path: "/product/classes",
+              component: './ProductClasses',
+            },
+            // {
+            //   path: '/welcome',
+            //   name: 'welcome',
+            //   icon: 'smile',
+            //   component: './Welcome',
+            // },
+            // {
+            //   path: '/admin',
+            //   name: 'admin',
+            //   icon: 'crown',
+            //   component: './Admin',
+            //   authority: ['admin'],
+            // },
+            // {
+            //   name: 'list.table-list',
+            //   icon: 'table',
+            //   path: '/list',
+            //   component: './ListTableList',
+            // },
             {
               component: './404',
             },
@@ -137,7 +197,7 @@ export default {
   },
   define: {
     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION:
-      ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
+    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION || '', // preview.pro.ant.design only do not use in your production ; preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
   },
   ignoreMomentLocale: true,
   lessLoaderOptions: {

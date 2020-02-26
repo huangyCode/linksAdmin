@@ -1,25 +1,31 @@
-import { stringify } from 'querystring';
-import { router } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
+import {stringify} from 'querystring';
+import {router} from 'umi';
+import {fakeAccountLogin} from '@/services/login';
+import {setAuthority} from '@/utils/authority';
+import {getPageQuery} from '@/utils/utils';
+import request from '@/utils/fetch'
+import MD5 from '@/utils/MD5';
+
 const Model = {
   namespace: 'login',
   state: {
     status: undefined,
   },
   effects: {
-    *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      }); // Login successfully
-
-      if (response.status === 'ok') {
+    * login({payload}, {call, put}) {
+      //{userName: "admin", password: "ant.design", type: "account"}
+      let res = yield request('/account/login', {
+        method: 'POST',
+        data: {name: payload.userName, pwd: payload.password},
+      });
+      if (res.code == 200) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: res.data || {},
+        }); // Login successfully
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
-        let { redirect } = params;
+        let {redirect} = params;
 
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
@@ -41,7 +47,7 @@ const Model = {
     },
 
     logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+      const {redirect} = getPageQuery(); // Note: There may be security issues, please note
 
       if (window.location.pathname !== '/user/login' && !redirect) {
         router.replace({
@@ -54,9 +60,18 @@ const Model = {
     },
   },
   reducers: {
-    changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+    changeLoginStatus(state, {payload}) {
+      console.log(payload.currentAuthority)
+      let user;
+      if (!payload.brandId)
+        user = 'admin'
+      else{
+        user = 'user'
+        localStorage.setItem('brandId', payload.brandId); // auto reload
+      }
+      setAuthority(user)
+      localStorage.setItem('token', payload.sessionKey); // auto reload
+      return {...state, status: payload.status, type: payload.type};
     },
   },
 };
