@@ -1,11 +1,19 @@
-import {DownOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, Dropdown, Menu, message} from 'antd';
-import React, {useState, useRef, useEffect} from 'react';
-import {PageHeaderWrapper} from '@ant-design/pro-layout';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import {queryRule, updateRule, addRule, removeRule, queryBrand, classesList,check} from './service';
+import {
+  queryRule,
+  updateRule,
+  addRule,
+  removeRule,
+  queryBrand,
+  classesList,
+  check,
+} from './service';
 import MD5 from '@/utils/MD5';
 
 /**
@@ -70,16 +78,16 @@ const Product = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [brands, setBrands] = useState([]);
-  const [brandEum, setBrandEum] = useState({})
-  const [classes, setClasses] = useState([])
+  const [brandEum, setBrandEum] = useState({});
+  const [classes, setClasses] = useState([]);
   const actionRef = useRef();
   const getBrand = async () => {
     let res = await queryBrand();
-    let obj = {}
+    let obj = {};
     for (let item of res) {
       obj[item.id] = item.name;
     }
-    setBrandEum(obj)
+    setBrandEum(obj);
     setBrands(res);
   };
   const getClasses = async () => {
@@ -87,12 +95,12 @@ const Product = () => {
     setClasses(res);
   };
 
-  const audit = async (ids) => {
-    await check({ids,verifyStatus:1})
+  const audit = async ids => {
+    await check({ ids, verifyStatus: 1 });
     if (actionRef.current) {
       actionRef.current.reload();
     }
-  }
+  };
 
   useEffect(() => {
     getBrand();
@@ -104,34 +112,38 @@ const Product = () => {
       dataIndex: 'name',
     },
     {
+      title: '商品英文名',
+      dataIndex: 'enName',
+    },
+    {
       title: '商品图',
       dataIndex: 'picUrl',
       render: (_, record) => (
         <>
-          <img src={_} style={{height: 60, width: 60}}/>
+          <img src={_} style={{ height: 60, width: 60 }} />
         </>
       ),
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '描述',
       dataIndex: 'desc',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '所属品牌',
       dataIndex: 'brandName',
-      valueEnum: brandEum
+      valueEnum: brandEum,
     },
     {
       title: '价格',
       dataIndex: 'price',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '单位',
       dataIndex: 'unit',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '上架状态',
@@ -173,13 +185,13 @@ const Product = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '修改时间',
       dataIndex: 'updateTime',
       valueType: 'dateTime',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -205,7 +217,7 @@ const Product = () => {
         headerTitle="商品列表"
         actionRef={actionRef}
         rowKey={record => record.id}
-        toolBarRender={(action, {selectedRows}) => [
+        toolBarRender={(action, { selectedRows }) => [
           <Button
             type="primary"
             onClick={() => {
@@ -217,12 +229,12 @@ const Product = () => {
           selectedRows && selectedRows.length > 0 && (
             <Button
               onClick={() => {
-                console.log(selectedRows)
-                let arr = []
-                for(let item of selectedRows){
-                  arr.push(item.id)
+                console.log(selectedRows);
+                let arr = [];
+                for (let item of selectedRows) {
+                  arr.push(item.id);
                 }
-                audit(arr)
+                audit(arr);
               }}
             >
               批量审核通过
