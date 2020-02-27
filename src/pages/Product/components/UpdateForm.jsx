@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {Form, Input, Modal, Select, Upload, Icon, message,InputNumber} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Modal, Select, Upload, Icon, message, InputNumber } from 'antd';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -24,7 +24,7 @@ function beforeUpload(file) {
 
 const CreateForm = props => {
   const [form] = Form.useForm();
-  const {updateModalVisible, onSubmit, onCancel, values} = props;
+  const { updateModalVisible, onSubmit, onCancel, values } = props;
   let [picUrl, setPicUrl] = useState(values.picUrl);
 
   const okHandle = async () => {
@@ -36,14 +36,12 @@ const CreateForm = props => {
   };
   const handleChange = info => {
     if (info.file.status === 'done') {
-      setPicUrl(
-        (info.file.response && info.file.response.data) || '',
-      );
+      setPicUrl((info.file.response && info.file.response.data) || '');
     }
   };
   const uploadButton = (
     <div>
-      <Icon type={'plus'}/>
+      <Icon type={'plus'} />
       <div className="ant-upload-text">Upload</div>
     </div>
   );
@@ -65,7 +63,7 @@ const CreateForm = props => {
           wrapperCol={{
             span: 15,
           }}
-          label="商品"
+          label="商品名"
           name="name"
           rules={[
             {
@@ -74,7 +72,25 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="商品英文名"
+          name="enName"
+          rules={[
+            {
+              required: true,
+              message: '不能为空！',
+            },
+          ]}
+        >
+          <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -92,7 +108,7 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -110,7 +126,7 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -128,7 +144,7 @@ const CreateForm = props => {
             },
           ]}
         >
-          <InputNumber placeholder="请输入"/>
+          <InputNumber placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -142,15 +158,15 @@ const CreateForm = props => {
           <Upload
             className="avatar-uploader"
             listType="picture-card"
-            name='imageFileName'
+            name="imageFileName"
             action="http://47.114.129.233:8090/alc-backend/file/upload/uploadImage"
-            headers={{token: localStorage.getItem('token')}}
+            headers={{ token: localStorage.getItem('token') }}
             showUploadList={false}
             multiple={true}
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {picUrl ? <img src={picUrl} alt="avatar" style={{width: '100%'}}/> : uploadButton}
+            {picUrl ? <img src={picUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
           </Upload>
         </FormItem>
         <FormItem
@@ -165,14 +181,14 @@ const CreateForm = props => {
         >
           <Select>
             {props.brands.length &&
-            props.brands.map(value => {
-              if (value.id)
-                return (
-                  <Option value={value.id} key={value.id}>
-                    {value.name}
-                  </Option>
-                );
-            })}
+              props.brands.map(value => {
+                if (value.id)
+                  return (
+                    <Option value={value.id} key={value.id}>
+                      {value.name}
+                    </Option>
+                  );
+              })}
           </Select>
         </FormItem>
         <FormItem
@@ -187,14 +203,14 @@ const CreateForm = props => {
         >
           <Select>
             {props.classes.length &&
-            props.classes.map(value => {
-              if (value.id)
-                return (
-                  <Option value={value.id} key={value.id}>
-                    {value.name}
-                  </Option>
-                );
-            })}
+              props.classes.map(value => {
+                if (value.id)
+                  return (
+                    <Option value={value.id} key={value.id}>
+                      {value.name}
+                    </Option>
+                  );
+              })}
           </Select>
         </FormItem>
         <FormItem

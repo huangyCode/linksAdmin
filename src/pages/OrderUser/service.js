@@ -3,7 +3,7 @@ import request from '@/utils/fetch';
 export async function queryRule(params) {
   let data = { page: params.current, size: params.pageSize };
   data.brandId = localStorage.getItem('brandId'); // auto reload
-  let res = await request('/product/getList', {
+  let res = await request('/order/getList', {
     method: 'POST',
     data,
   });
@@ -14,7 +14,7 @@ export async function queryRule(params) {
   return result;
 }
 
-export async function queryBrand() {
+export async function queryBrand(params) {
   let res = await request('/brand/getAll', {
     method: 'GET',
   });
@@ -42,8 +42,21 @@ export async function addRule(params) {
   });
 }
 
+export async function check(params) {
+  return request('/product/auditBatch', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
 export async function updateRule(params) {
   return request('/product/update', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
+
+export async function detail(params) {
+  return request('/order/getDetail', {
     method: 'POST',
     data: { ...params },
   });

@@ -186,7 +186,7 @@ const CreateForm = props => {
           label="开启状态"
           name="brand"
         >
-          <Select value={1}>
+          <Select>
             <Option value={0}>开启</Option>
             <Option value={1}>关闭</Option>
           </Select>

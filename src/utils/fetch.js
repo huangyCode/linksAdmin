@@ -4,8 +4,9 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
-import {stringify} from "querystring";
-import {router} from "umi/index";
+import { stringify } from 'querystring';
+import { router } from 'umi/index';
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -37,13 +38,14 @@ const errorHandler = error => {
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
     });
-    if(response.status === 401){
+    console.log(response);
+    if (response.status === 401) {
       router.replace({
         pathname: '/user/login',
         search: stringify({
           redirect: window.location.href,
         }),
-      })
+      });
     }
   } else if (!response) {
     notification.error({
@@ -63,11 +65,17 @@ const umiRequest = extend({
   // 默认错误处理
   credentials: 'omit', // 默认请求是否带上cookie
 });
-const request = function(url, option) {
+const request = async function(url, option) {
   url = 'http://47.114.129.233:8090/alc-backend' + url;
-  if(localStorage.getItem('token'))
-    option.headers = {token: localStorage.getItem('token')}
-  return umiRequest(url, option);
+  if (localStorage.getItem('token')) option.headers = { token: localStorage.getItem('token') };
+  let res = await umiRequest(url, option);
+  console.log(res);
+  if (res.code === 401) {
+    router.replace({
+      pathname: '/user/login',
+    });
+  }
+  return res;
 };
 
 export default request;

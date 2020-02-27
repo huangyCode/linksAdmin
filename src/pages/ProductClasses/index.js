@@ -79,14 +79,18 @@ const ProductClasses = () => {
       dataIndex: 'weight',
     },
     {
+      title: '类型英文名',
+      dataIndex: 'enName',
+    },
+    {
       title: '状态',
       dataIndex: 'status',
       valueEnum: {
-        0: {
+        1: {
           text: '关闭',
           status: 'Default',
         },
-        1: {
+        0: {
           text: '开启',
           status: 'Processing',
         },

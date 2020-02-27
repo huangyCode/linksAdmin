@@ -28,45 +28,19 @@ const handleUpdate = async fields => {
 };
 
 const Order = () => {
-  const [modalVisible, handleModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
-  const [brands, setBrands] = useState([]);
-  const [brandEum, setBrandEum] = useState({});
   const [classes, setClasses] = useState([]);
   const actionRef = useRef();
-  const getBrand = async () => {
-    let res = await queryBrand();
-    let obj = {};
-    for (let item of res) {
-      obj[item.id] = item.name;
-    }
-    setBrandEum(obj);
-    setBrands(res);
-  };
   const getClasses = async () => {
     let res = await classesList();
     setClasses(res);
   };
 
-  const audit = async ids => {
-    await check({ ids, verifyStatus: 1 });
-    if (actionRef.current) {
-      actionRef.current.reload();
-    }
-  };
-  const onSubmit = async params => {
-    console.log(params);
-  };
   useEffect(() => {
-    getBrand();
     getClasses();
   }, []);
   const columns = [
-    {
-      title: '商铺品牌名',
-      dataIndex: 'brandName',
-    },
     {
       title: '订单号',
       dataIndex: 'code',
@@ -183,7 +157,6 @@ const Order = () => {
         rowKey={record => record.id}
         request={params => queryRule(params)}
         columns={columns}
-        onSubmit={onSubmit}
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
@@ -191,7 +164,7 @@ const Order = () => {
             const success = await handleUpdate(value);
 
             if (success) {
-              handleModalVisible(false);
+              handleUpdateModalVisible(false);
               setStepFormValues({});
 
               if (actionRef.current) {
@@ -199,7 +172,6 @@ const Order = () => {
               }
             }
           }}
-          brands={brands}
           onCancel={() => {
             handleUpdateModalVisible(false);
             setStepFormValues({});

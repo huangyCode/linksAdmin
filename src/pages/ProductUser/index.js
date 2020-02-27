@@ -1,12 +1,11 @@
-import {DownOutlined, PlusOutlined} from '@ant-design/icons';
-import {Button, Divider, Dropdown, Menu, message} from 'antd';
-import React, {useState, useRef, useEffect} from 'react';
-import {PageHeaderWrapper} from '@ant-design/pro-layout';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import {queryRule, updateRule, addRule, removeRule, queryBrand, classesList} from './service';
-import MD5 from '@/utils/MD5';
+import { queryRule, updateRule, addRule, removeRule, queryBrand, classesList } from './service';
 
 /**
  * 添加节点
@@ -37,7 +36,7 @@ const handleUpdate = async fields => {
   const hide = message.loading('正在配置');
 
   try {
-    fields.brandId =  Number(localStorage.getItem('brandId'));
+    fields.brandId = Number(localStorage.getItem('brandId'));
     await updateRule(fields);
     hide();
     message.success('配置成功');
@@ -71,23 +70,16 @@ const ProductUser = () => {
   const [modalVisible, handleModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
-  const [brands, setBrands] = useState([]);
-  const [classes, setClasses] = useState([])
+  const [classes, setClasses] = useState([]);
   const actionRef = useRef();
-  const getBrand = async () => {
-    let res = await queryBrand();
-    setBrands(res);
-  };
   const getClasses = async () => {
     let res = await classesList();
     setClasses(res);
   };
 
-  const audit = async () => {
-  }
+  const audit = async () => {};
 
   useEffect(() => {
-    getBrand();
     getClasses();
   }, []);
   const columns = [
@@ -96,39 +88,43 @@ const ProductUser = () => {
       dataIndex: 'name',
     },
     {
+      title: '英文名',
+      dataIndex: 'enName',
+    },
+    {
       title: '商品图',
       dataIndex: 'picUrl',
       render: (_, record) => (
         <>
-          <img src={_} style={{height: 60, width: 60}}/>
+          <img src={_} style={{ height: 60, width: 60 }} />
         </>
       ),
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '描述',
       dataIndex: 'desc',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '所属品牌',
       dataIndex: 'brandName',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '价格',
       dataIndex: 'price',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '价格单位',
       dataIndex: 'priceUnit',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '单位',
       dataIndex: 'unit',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '上架状态',
@@ -170,13 +166,13 @@ const ProductUser = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '修改时间',
       dataIndex: 'updateTime',
       valueType: 'dateTime',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '操作',
@@ -210,7 +206,7 @@ const ProductUser = () => {
             }}
           >
             新建商品
-          </Button>
+          </Button>,
         ]}
         request={params => queryRule(params)}
         columns={columns}
@@ -225,7 +221,6 @@ const ProductUser = () => {
             }
           }
         }}
-        brands={brands}
         classes={classes}
         onCancel={() => {
           setStepFormValues({});
@@ -247,7 +242,6 @@ const ProductUser = () => {
               }
             }
           }}
-          brands={brands}
           onCancel={() => {
             handleUpdateModalVisible(false);
             setStepFormValues({});

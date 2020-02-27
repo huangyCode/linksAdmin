@@ -1,10 +1,10 @@
 import React from 'react';
-import {Form, Input, Modal, Select, InputNumber} from 'antd';
+import { Form, Input, Modal, Select, InputNumber } from 'antd';
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 const CreateForm = props => {
   const [form] = Form.useForm();
-  const {updateModalVisible, onSubmit, onCancel} = props;
+  const { updateModalVisible, onSubmit, onCancel } = props;
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
     fieldsValue.id = props.values.id;
@@ -46,7 +46,25 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="类型英文名"
+          name="enName"
+          rules={[
+            {
+              required: true,
+              message: '不能为空！',
+            },
+          ]}
+        >
+          <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -64,7 +82,7 @@ const CreateForm = props => {
             },
           ]}
         >
-          <InputNumber placeholder="请输入"/>
+          <InputNumber placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -77,8 +95,8 @@ const CreateForm = props => {
           name="status"
         >
           <Select>
-            <Option value={0}>关闭</Option>
-            <Option value={1}>开启</Option>
+            <Option value={1}>关闭</Option>
+            <Option value={0}>开启</Option>
           </Select>
         </FormItem>
       </Form>
