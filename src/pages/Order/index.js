@@ -56,7 +56,13 @@ const Order = () => {
     }
   };
   const onSubmit = async params => {
-    console.log(params);
+    if (params.brandName) {
+      params.brandId = params.brandName;
+      delete params.brandName;
+    }
+    params.page = 1;
+    params.size = 10;
+    queryRule(params);
   };
   useEffect(() => {
     getBrand();
@@ -66,6 +72,7 @@ const Order = () => {
     {
       title: '商铺品牌名',
       dataIndex: 'brandName',
+      valueEnum: brandEum,
     },
     {
       title: '订单号',

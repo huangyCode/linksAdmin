@@ -78,7 +78,11 @@ const ProductUser = () => {
   };
 
   const audit = async () => {};
-
+  const onSubmit = async params => {
+    params.page = 1;
+    params.size = 10;
+    queryRule(params);
+  };
   useEffect(() => {
     getClasses();
   }, []);
@@ -210,6 +214,7 @@ const ProductUser = () => {
         ]}
         request={params => queryRule(params)}
         columns={columns}
+        onSubmit={onSubmit}
       />
       <CreateForm
         onSubmit={async value => {

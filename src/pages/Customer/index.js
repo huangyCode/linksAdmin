@@ -15,6 +15,7 @@ const Customer = () => {
     {
       title: '用户头像',
       dataIndex: 'avatarUrl',
+      hideInSearch: true,
       render: (_, record) => (
         <>
           <img src={_} style={{ height: 60, width: 60 }} />
@@ -38,6 +39,7 @@ const Customer = () => {
           status: 'Processing',
         },
       },
+      hideInSearch: true,
     },
     {
       title: '电话号码',
@@ -46,19 +48,23 @@ const Customer = () => {
     {
       title: '省份',
       dataIndex: 'province',
+      hideInSearch: true,
     },
     {
       title: '市',
       dataIndex: 'city',
+      hideInSearch: true,
     },
     {
       title: 'openId',
       dataIndex: 'openId',
+      hideInSearch: true,
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
+      hideInSearch: true,
     },
   ];
   return (

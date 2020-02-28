@@ -40,7 +40,11 @@ const CreateForm = props => {
   let [status, setStatus] = useState(values.status);
 
   const okHandle = async () => {
-    let obj = { id: values.id, status };
+    let obj = { orderCode: values.code, status: Number(values.status) + 1 };
+    onSubmit(obj);
+  };
+  const cancelhandle = async () => {
+    let obj = { orderCode: values.code, status: 6 };
     onSubmit(obj);
   };
   const changeStatus = e => {
@@ -91,23 +95,41 @@ const CreateForm = props => {
       <div style={{ marginTop: 5, marginBottom: 5 }}>总价：{values.amount}</div>
       <div style={{ marginBottom: 10 }}>备注：{values.desc || '暂无信息'}</div>
       <div>
-        <span>订单状态：</span>
-        <Select defaultValue={status} style={{ width: 150 }} onChange={changeStatus}>
-          {values.status == 0 && (
-            <Option value="0" disable>
-              等待商家确认
-            </Option>
-          )}
-          {(values.status == 0 || values.status == 1) && <Option value="1">已接单</Option>}
-          {(values.status == 1 || values.status == 2) && <Option value="2">配餐完成</Option>}
-          {(values.status == 2 || values.status == 3) && <Option value="3">配送中</Option>}
-          {(values.status == 3 || values.status == 4) && <Option value="4">订单完成</Option>}
-          {values.status == 5 && <Option value="5">已取消</Option>}
-          {values.status == 6 && <Option value="6">支付后商家取消</Option>}
-        </Select>
-        <Button style={{ marginLeft: 10 }} type="primary" onClick={okHandle}>
-          修改状态
-        </Button>
+        <span>
+          订单状态：
+          {values.status == 0
+            ? '等待商家确认'
+            : values.status == 1
+            ? '已接单'
+            : values.status == 2
+            ? '配餐完成'
+            : values.status == 3
+            ? '配送中'
+            : values.status == 4
+            ? '订单完成'
+            : values.status == 5
+            ? '已取消'
+            : '商家取消'}
+        </span>
+        {values.payStatus == 0 &&
+        (values.status == 0 || values.status == 1 || values.status == 2 || values.status == 3) ? (
+          <Button style={{ marginLeft: 10 }} type="primary" onClick={okHandle}>
+            {values.status == 0
+              ? '商家接单'
+              : values.status == 1
+              ? '配餐完成'
+              : values.status == 2
+              ? '去配送'
+              : values.status == 3
+              ? '订单完成'
+              : ''}
+          </Button>
+        ) : null}
+        {values.payStatus == 0 && !(values.status == 5 || values.status == 6) ? (
+          <Button style={{ marginLeft: 10 }} type="primary" onClick={cancelhandle}>
+            退款取消订单
+          </Button>
+        ) : null}
       </div>
     </Drawer>
   );

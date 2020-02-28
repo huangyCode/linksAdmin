@@ -1,7 +1,9 @@
 import request from '@/utils/fetch';
 
 export async function queryRule(params) {
-  let data = { page: params.current, size: params.pageSize };
+  let data = { page: params.current, size: params.pageSize, ...params };
+  delete data.current;
+  delete data.pageSize;
   data.brandId = localStorage.getItem('brandId'); // auto reload
   let res = await request('/order/getList', {
     method: 'POST',
@@ -49,7 +51,7 @@ export async function check(params) {
   });
 }
 export async function updateRule(params) {
-  return request('/product/update', {
+  return request('/order/process', {
     method: 'POST',
     data: { ...params },
   });

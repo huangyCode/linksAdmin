@@ -1,7 +1,9 @@
 import request from '@/utils/fetch';
 
 export async function queryRule(params) {
-  let data = {page: params.current, size: params.pageSize};
+  let data = { page: params.current, size: params.pageSize, ...params };
+  delete data.current;
+  delete data.pageSize;
   let res = await request('/product/getList', {
     method: 'POST',
     data,
@@ -20,36 +22,36 @@ export async function queryBrand(params) {
   return res.data;
 }
 
-export async function classesList(){
+export async function classesList() {
   let res = await request('/productSort/getAll', {
-    method: 'POST'
-  })
-  return res.data
+    method: 'POST',
+  });
+  return res.data;
 }
 
 export async function removeRule(uid) {
   return request('/account/delete', {
     method: 'GET',
-    params: {uid},
+    params: { uid },
   });
 }
 
 export async function addRule(params) {
   return request('/product/add', {
     method: 'POST',
-    data: {...params},
+    data: { ...params },
   });
 }
 
-export async function check(params){
+export async function check(params) {
   return request('/product/auditBatch', {
     method: 'POST',
-    data: {...params},
+    data: { ...params },
   });
 }
 export async function updateRule(params) {
   return request('/product/update', {
     method: 'POST',
-    data: {...params},
+    data: { ...params },
   });
 }

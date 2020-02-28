@@ -101,7 +101,16 @@ const Product = () => {
       actionRef.current.reload();
     }
   };
-
+  const onSubmit = async params => {
+    if (params.brandName) {
+      params.brandId = params.brandName;
+      delete params.brandName;
+    }
+    params.page = 1;
+    params.size = 10;
+    console.log(params);
+    queryRule(params);
+  };
   useEffect(() => {
     getBrand();
     getClasses();
@@ -114,6 +123,7 @@ const Product = () => {
     {
       title: '商品英文名',
       dataIndex: 'enName',
+      hideInSearch: true,
     },
     {
       title: '商品图',
@@ -256,6 +266,7 @@ const Product = () => {
         )}
         request={params => queryRule(params)}
         columns={columns}
+        onSubmit={onSubmit}
         rowSelection={{}}
       />
       <CreateForm

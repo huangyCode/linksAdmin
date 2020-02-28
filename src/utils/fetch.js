@@ -70,7 +70,7 @@ const request = async function(url, option) {
   if (localStorage.getItem('token')) option.headers = { token: localStorage.getItem('token') };
   let res = await umiRequest(url, option);
   console.log(res);
-  if (res.code === 401) {
+  if (res.code === 411) {
     router.replace({
       pathname: '/user/login',
     });

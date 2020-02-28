@@ -36,7 +36,11 @@ const Order = () => {
     let res = await classesList();
     setClasses(res);
   };
-
+  const onSubmit = async params => {
+    params.page = 1;
+    params.size = 10;
+    queryRule(params);
+  };
   useEffect(() => {
     getClasses();
   }, []);
@@ -157,6 +161,7 @@ const Order = () => {
         rowKey={record => record.id}
         request={params => queryRule(params)}
         columns={columns}
+        onSubmit={onSubmit}
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
