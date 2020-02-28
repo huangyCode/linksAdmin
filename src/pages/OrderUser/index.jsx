@@ -1,11 +1,10 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, queryBrand, classesList, check, detail } from './service';
-import MD5 from '@/utils/MD5';
+import { queryRule, updateRule, classesList, detail } from './service';
 
 /**
  * 更新节点

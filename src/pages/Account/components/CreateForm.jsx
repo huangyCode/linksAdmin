@@ -77,7 +77,8 @@ const CreateForm = props => {
           ]}
         >
           <Select>
-            {props.brands.length &&
+            {props.brands &&
+              props.brands.length &&
               props.brands.map(value => {
                 if (value.id)
                   return (

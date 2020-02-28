@@ -1,12 +1,11 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, message } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, updateRule, addRule, removeRule, queryBrand } from './service';
-import MD5 from '@/utils/MD5';
 
 /**
  * 添加节点
@@ -133,7 +132,7 @@ const Account = () => {
                 name: record.name,
                 pwd: record.pwd,
                 status: record.status,
-                brand: record.brand && record.brand.id || 0,
+                brand: (record.brand && record.brand.id) || 0,
               };
               setStepFormValues(data);
               handleUpdateModalVisible(true);

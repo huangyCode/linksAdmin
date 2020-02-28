@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {Form, Input, Modal, Select} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Modal, Select } from 'antd';
 
 const FormItem = Form.Item;
-const {Option} = Select;
+const { Option } = Select;
 const CreateForm = props => {
   const [form] = Form.useForm();
-  const {updateModalVisible, onSubmit, onCancel} = props;
+  const { updateModalVisible, onSubmit, onCancel } = props;
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
     form.resetFields();
@@ -48,7 +48,7 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
         </FormItem>
         <FormItem
           labelCol={{
@@ -66,36 +66,39 @@ const CreateForm = props => {
             },
           ]}
         >
-          <Input placeholder="请输入"/>
+          <Input placeholder="请输入" />
         </FormItem>
-        {props.values.brand ? <FormItem
-          labelCol={{
-            span: 5,
-          }}
-          wrapperCol={{
-            span: 15,
-          }}
-          label="选择品牌"
-          name="brand"
-          rules={[
-            {
-              required: true,
-              message: '不能为空',
-            },
-          ]}
-        >
-          <Select>
-            {props.brands.length &&
-            props.brands.map(value => {
-              if (value.id)
-                return (
-                  <Option value={value.id} key={value.id}>
-                    {value.name}
-                  </Option>
-                );
-            })}
-          </Select>
-        </FormItem> : null}
+        {props.values.brand ? (
+          <FormItem
+            labelCol={{
+              span: 5,
+            }}
+            wrapperCol={{
+              span: 15,
+            }}
+            label="选择品牌"
+            name="brand"
+            rules={[
+              {
+                required: true,
+                message: '不能为空',
+              },
+            ]}
+          >
+            <Select>
+              {props.brands &&
+                props.brands.length &&
+                props.brands.map(value => {
+                  if (value.id)
+                    return (
+                      <Option value={value.id} key={value.id}>
+                        {value.name}
+                      </Option>
+                    );
+                })}
+            </Select>
+          </FormItem>
+        ) : null}
         <FormItem
           labelCol={{
             span: 5,

@@ -1,43 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Input,
-  Modal,
-  Select,
-  Upload,
-  Icon,
-  message,
-  InputNumber,
-  Drawer,
-  Row,
-  Col,
-  Button,
-} from 'antd';
-
-const FormItem = Form.Item;
-const { Option } = Select;
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    notification.error({
-      description: 'You can only upload JPG/PNG file!',
-      message: '图片类型错误',
-    });
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    notification.error({
-      description: 'Image must smaller than 2MB!',
-      message: '图片超大',
-    });
-  }
-  return isJpgOrPng && isLt2M;
-}
+import React, { useState } from 'react';
+import { Icon, Drawer, Row, Col, Button } from 'antd';
 
 const CreateForm = props => {
   const { updateModalVisible, onSubmit, onCancel, values } = props;
-  let [status, setStatus] = useState(values.status);
+  let [setStatus] = useState(values.status);
 
   const okHandle = async () => {
     let obj = { orderCode: values.code, status: Number(values.status) + 1 };

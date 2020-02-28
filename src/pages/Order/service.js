@@ -15,7 +15,7 @@ export async function queryRule(params) {
   return result;
 }
 
-export async function queryBrand(params) {
+export async function queryBrand() {
   let res = await request('/brand/getAll', {
     method: 'GET',
   });

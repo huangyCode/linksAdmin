@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Input, Modal, Select, Upload, Icon, message, InputNumber } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, Modal, Select, Upload, Icon, InputNumber } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;

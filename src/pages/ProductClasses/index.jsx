@@ -1,11 +1,11 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
+import { Button, message } from 'antd';
+import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule, queryBrand, classesList } from './service';
+import { queryRule, updateRule, addRule, removeRule } from './service';
 
 /**
  * 添加节点
@@ -16,7 +16,6 @@ const handleAdd = async fields => {
   const hide = message.loading('正在添加');
 
   try {
-    fields.brandId = Number(localStorage.getItem('brandId'));
     await addRule(fields);
     hide();
     message.success('添加成功');
@@ -36,7 +35,6 @@ const handleUpdate = async fields => {
   const hide = message.loading('正在配置');
 
   try {
-    fields.brandId = Number(localStorage.getItem('brandId'));
     await updateRule(fields);
     hide();
     message.success('配置成功');
@@ -66,103 +64,35 @@ const handleRemove = async uid => {
   }
 };
 
-const ProductUser = () => {
+const ProductClasses = () => {
   const [modalVisible, handleModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
-  const [classes, setClasses] = useState([]);
   const actionRef = useRef();
-  const getClasses = async () => {
-    let res = await classesList();
-    setClasses(res);
-  };
-
-  const audit = async () => {};
-  const onSubmit = async params => {
-    params.page = 1;
-    params.size = 10;
-    queryRule(params);
-  };
-  useEffect(() => {
-    getClasses();
-  }, []);
   const columns = [
     {
-      title: '商品名',
+      title: '类型名',
       dataIndex: 'name',
     },
     {
-      title: '英文名',
+      title: '权重',
+      dataIndex: 'weight',
+    },
+    {
+      title: '类型英文名',
       dataIndex: 'enName',
     },
     {
-      title: '商品图',
-      dataIndex: 'picUrl',
-      render: (_, record) => (
-        <>
-          <img src={_} style={{ height: 60, width: 60 }} />
-        </>
-      ),
-      hideInSearch: true,
-    },
-    {
-      title: '描述',
-      dataIndex: 'desc',
-      hideInSearch: true,
-    },
-    {
-      title: '所属品牌',
-      dataIndex: 'brandName',
-      hideInSearch: true,
-    },
-    {
-      title: '价格',
-      dataIndex: 'price',
-      hideInSearch: true,
-    },
-    {
-      title: '价格单位',
-      dataIndex: 'priceUnit',
-      hideInSearch: true,
-    },
-    {
-      title: '单位',
-      dataIndex: 'unit',
-      hideInSearch: true,
-    },
-    {
-      title: '上架状态',
+      title: '状态',
       dataIndex: 'status',
       valueEnum: {
-        0: {
-          text: '新建',
+        1: {
+          text: '关闭',
           status: 'Default',
         },
-        1: {
-          text: '已上架',
-          status: 'Success',
-        },
-        2: {
-          text: '已下架',
-          status: 'Error',
-        },
-      },
-    },
-    {
-      title: '审核状态',
-      dataIndex: 'status',
-      valueEnum: {
         0: {
-          text: '待审批',
-          status: 'Default',
-        },
-        1: {
-          text: '通过',
-          status: 'Success',
-        },
-        2: {
-          text: '驳回',
-          status: 'Error',
+          text: '开启',
+          status: 'Processing',
         },
       },
     },
@@ -170,13 +100,11 @@ const ProductUser = () => {
       title: '创建时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
-      hideInSearch: true,
     },
     {
       title: '修改时间',
       dataIndex: 'updateTime',
       valueType: 'dateTime',
-      hideInSearch: true,
     },
     {
       title: '操作',
@@ -199,7 +127,7 @@ const ProductUser = () => {
   return (
     <PageHeaderWrapper>
       <ProTable
-        headerTitle="商品列表"
+        headerTitle="商品类型列表"
         actionRef={actionRef}
         rowKey={record => record.id}
         toolBarRender={() => [
@@ -209,12 +137,12 @@ const ProductUser = () => {
               handleModalVisible(true);
             }}
           >
-            新建商品
+            新建类型
           </Button>,
         ]}
+        search={false}
         request={params => queryRule(params)}
         columns={columns}
-        onSubmit={onSubmit}
       />
       <CreateForm
         onSubmit={async value => {
@@ -226,7 +154,6 @@ const ProductUser = () => {
             }
           }
         }}
-        classes={classes}
         onCancel={() => {
           setStepFormValues({});
           handleModalVisible(false);
@@ -251,7 +178,6 @@ const ProductUser = () => {
             handleUpdateModalVisible(false);
             setStepFormValues({});
           }}
-          classes={classes}
           updateModalVisible={updateModalVisible}
           values={stepFormValues}
         />
@@ -260,4 +186,4 @@ const ProductUser = () => {
   );
 };
 
-export default ProductUser;
+export default ProductClasses;
