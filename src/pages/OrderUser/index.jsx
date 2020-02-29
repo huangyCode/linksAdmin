@@ -105,11 +105,11 @@ const Order = () => {
       dataIndex: 'payStatus',
       valueEnum: {
         0: {
-          text: '已支付',
+          text: '未支付',
           status: 'Success',
         },
         1: {
-          text: '未支付',
+          text: '已支付',
           status: 'Processing',
         },
         2: {
