@@ -69,8 +69,8 @@ const CreateForm = props => {
             : values.status == 4
             ? '订单完成'
             : values.status == 5
-            ? '已取消'
-            : '商家取消'}
+            ? '用户已取消'
+            : '商家已取消'}
         </span>
         {values.payStatus == 1 &&
         (values.status == 0 || values.status == 1 || values.status == 2 || values.status == 3) ? (

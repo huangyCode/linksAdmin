@@ -33,9 +33,7 @@ const CreateForm = props => {
   };
   const handleChange = info => {
     if (info.file.status === 'done') {
-      setPicUrl(
-        (info.file.response && info.file.response.data && info.file.response.data.url) || '',
-      );
+      setPicUrl((info.file.response && info.file.response.data) || '');
     }
   };
   let flag = !(props.values && props.values.verifyStatus == 1);
