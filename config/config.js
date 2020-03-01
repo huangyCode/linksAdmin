@@ -102,7 +102,7 @@ export default {
             },
             {
               path: '/',
-              redirect: '/productuser',
+              redirect: '/orderuser',
               authority: ['user'],
             },
             {

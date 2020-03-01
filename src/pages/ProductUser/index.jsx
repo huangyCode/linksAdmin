@@ -17,10 +17,12 @@ const handleAdd = async fields => {
 
   try {
     fields.brandId = Number(localStorage.getItem('brandId'));
-    await addRule(fields);
-    hide();
-    message.success('添加成功');
-    return true;
+    let res = await addRule(fields);
+    if (res.code === 200) {
+      message.success('添加成功');
+      hide();
+      return true;
+    } else return false;
   } catch (error) {
     hide();
     message.error('添加失败请重试！');
@@ -37,10 +39,12 @@ const handleUpdate = async fields => {
 
   try {
     fields.brandId = Number(localStorage.getItem('brandId'));
-    await updateRule(fields);
-    hide();
-    message.success('配置成功');
-    return true;
+    let res = await updateRule(fields);
+    if (res.code === 200) {
+      message.success('配置成功');
+      hide();
+      return true;
+    } else return false;
   } catch (error) {
     hide();
     message.error('配置失败请重试！');
@@ -55,9 +59,9 @@ const handleUpdate = async fields => {
 const handleRemove = async uid => {
   const hide = message.loading('正在删除');
   try {
-    await removeRule(uid);
+    let res = await removeRule(uid);
     hide();
-    message.success('删除成功，即将刷新');
+    if (res.code === 200) message.success('删除成功，即将刷新');
     return true;
   } catch (error) {
     hide();

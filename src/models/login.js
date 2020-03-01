@@ -41,7 +41,7 @@ const Model = {
         //   return router.replace(redirect);
         // }
         if (res.data && res.data.brandId) {
-          router.replace('/productuser');
+          router.replace('/orderuser');
         } else {
           router.replace('/');
         }

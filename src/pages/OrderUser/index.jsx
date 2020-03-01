@@ -15,10 +15,12 @@ const handleUpdate = async fields => {
   const hide = message.loading('正在配置');
 
   try {
-    await updateRule(fields);
-    hide();
-    message.success('配置成功');
-    return true;
+    let res = await updateRule(fields);
+    if (res.code === 200) {
+      message.success('配置成功');
+      hide();
+      return true;
+    } else return false;
   } catch (error) {
     hide();
     message.error('配置失败请重试！');

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal, Select, Upload, Icon, message, InputNumber } from 'antd';
+import domain from '../../../../config/conf';
 const FormItem = Form.Item;
 const { Option } = Select;
 
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只能上传 JPG/PNG 类型的文件!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('图片大小必须小于 2MB!');
   }
   return isJpgOrPng && isLt2M;
 }
@@ -155,7 +156,7 @@ const CreateForm = props => {
         >
           <Upload
             name="imageFileName"
-            action="http://47.114.129.233:8090/alc-backend/file/upload/uploadImage"
+            action={domain + '/file/upload/uploadImage'}
             headers={{ token: localStorage.getItem('token') }}
             className="avatar-uploader"
             listType="picture-card"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Modal, Select, InputNumber, TimePicker, Icon, Upload, message } from 'antd';
+import domain from '../../../../config/conf';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -90,7 +91,7 @@ const CreateForm = props => {
         >
           <Upload
             name="imageFileName"
-            action="http://47.114.129.233:8090/alc-backend/file/upload/uploadImage"
+            action={domain + '/file/upload/uploadImage'}
             headers={{ token: localStorage.getItem('token') }}
             className="avatar-uploader"
             listType="picture-card"

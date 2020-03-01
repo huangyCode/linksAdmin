@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Modal, Select, Upload, Icon, InputNumber } from 'antd';
+import { Form, Input, Modal, Select, Upload, Icon, InputNumber, message } from 'antd';
+import domain from '../../../../config/conf';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -7,17 +8,11 @@ const { Option } = Select;
 function beforeUpload(file) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    notification.error({
-      description: 'You can only upload JPG/PNG file!',
-      message: '图片类型错误',
-    });
+    message.error('You can only upload JPG/PNG file!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    notification.error({
-      description: 'Image must smaller than 2MB!',
-      message: '图片超大',
-    });
+    message.error('Image must smaller than 2MB!');
   }
   return isJpgOrPng && isLt2M;
 }
@@ -159,7 +154,7 @@ const CreateForm = props => {
             className="avatar-uploader"
             listType="picture-card"
             name="imageFileName"
-            action="http://47.114.129.233:8090/alc-backend/file/upload/uploadImage"
+            action={domain + '/file/upload/uploadImage'}
             headers={{ token: localStorage.getItem('token') }}
             showUploadList={false}
             multiple={true}
