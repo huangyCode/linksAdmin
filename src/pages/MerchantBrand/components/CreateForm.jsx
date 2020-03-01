@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Modal, Select, InputNumber, TimePicker, Icon, Upload } from 'antd';
+import { Form, Input, Modal, Select, InputNumber, TimePicker, Icon, Upload, message } from 'antd';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -34,9 +34,7 @@ const CreateForm = props => {
 
   const handleChange = info => {
     if (info.file.status === 'done') {
-      setPicUrl(
-        (info.file.response && info.file.response.data && info.file.response.data.url) || '',
-      );
+      setPicUrl((info.file.response && info.file.response.data) || '');
     }
   };
   const uploadButton = (
@@ -91,7 +89,9 @@ const CreateForm = props => {
           label="品牌图片"
         >
           <Upload
-            action="http://120.55.60.49:9980/file/upload"
+            name="imageFileName"
+            action="http://47.114.129.233:8090/alc-backend/file/upload/uploadImage"
+            headers={{ token: localStorage.getItem('token') }}
             className="avatar-uploader"
             listType="picture-card"
             showUploadList={false}

@@ -98,6 +98,12 @@ export default {
             {
               path: '/',
               redirect: '/customer',
+              authority: ['admin'],
+            },
+            {
+              path: '/',
+              redirect: '/productuser',
+              authority: ['user'],
             },
             {
               path: '/customer',

@@ -1,4 +1,6 @@
 import { queryCurrent, query as queryUsers } from '@/services/user';
+import { router } from 'umi';
+
 const UserModel = {
   namespace: 'user',
   state: {
@@ -14,6 +16,12 @@ const UserModel = {
     },
 
     *fetchCurrent(_, { call, put }) {
+      if (!localStorage.getItem('token')) {
+        router.replace({
+          pathname: '/user/login',
+        });
+      }
+
       const response = {
         name: 'Serati Ma',
         avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',

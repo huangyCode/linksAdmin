@@ -3,7 +3,7 @@
  * 更详细的 api 文档: https://github.com/umijs/umi-request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { stringify } from 'querystring';
 import { router } from 'umi/index';
 import domain from '../../config/conf';
@@ -71,9 +71,12 @@ const request = async function(url, option) {
   if (localStorage.getItem('token')) option.headers = { token: localStorage.getItem('token') };
   let res = await umiRequest(url, option);
   if (res.code === 411) {
-    router.replace({
+    return router.replace({
       pathname: '/user/login',
     });
+  }
+  if (res.code !== 200) {
+    return message.error(res.message);
   }
   return res;
 };

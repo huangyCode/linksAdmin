@@ -5,7 +5,7 @@
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "cross-env NODE_ENV=\"development\" umi build",
     "deploy": "npm run site && npm run gh-pages",
     "fetch:blocks": "pro fetch-blocks --branch antd@4 && npm run prettier",
     "format-imports": "cross-env import-sort --write '**/*.{js,jsx,ts,tsx}'",
