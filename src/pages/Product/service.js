@@ -19,18 +19,18 @@ export async function queryRule(params) {
   return result;
 }
 
-export async function queryBrand(params) {
+export async function queryBrand() {
   let res = await request('/brand/getAll', {
     method: 'GET',
   });
-  return res.data;
+  return res.data || null;
 }
 
 export async function classesList() {
   let res = await request('/productSort/getAll', {
     method: 'POST',
   });
-  return res.data;
+  return res.data || null;
 }
 
 export async function removeRule(uid) {

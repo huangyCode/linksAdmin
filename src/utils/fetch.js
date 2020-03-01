@@ -6,6 +6,7 @@ import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { stringify } from 'querystring';
 import { router } from 'umi/index';
+import domain from '../../config/conf';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -66,10 +67,9 @@ const umiRequest = extend({
   credentials: 'omit', // 默认请求是否带上cookie
 });
 const request = async function(url, option) {
-  url = 'http://47.114.129.233:8090/alc-backend' + url;
+  url = domain + url;
   if (localStorage.getItem('token')) option.headers = { token: localStorage.getItem('token') };
   let res = await umiRequest(url, option);
-  console.log(res);
   if (res.code === 411) {
     router.replace({
       pathname: '/user/login',

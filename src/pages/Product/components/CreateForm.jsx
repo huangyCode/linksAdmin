@@ -173,7 +173,8 @@ const CreateForm = props => {
           name="brandId"
         >
           <Select>
-            {props.brands.length &&
+            {props.brands &&
+              props.brands.length &&
               props.brands.map(value => {
                 if (value.id)
                   return (
@@ -195,7 +196,8 @@ const CreateForm = props => {
           name="productSortId"
         >
           <Select>
-            {props.classes.length &&
+            {props.classes &&
+              props.classes.length &&
               props.classes.map(value => {
                 if (value.id)
                   return (

@@ -19,7 +19,7 @@
     "lint:prettier": "check-prettier lint",
     "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
     "prettier": "prettier -c --write \"**/*\"",
-    "start": "umi dev",
+    "start": "cross-env NODE_ENV=\"development\" umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "start:no-ui": "cross-env UMI_UI=none umi dev",
     "test": "umi test",
@@ -27,6 +27,7 @@
     "test:component": "umi test ./src/components",
     "tsc": "tsc",
     "ui": "umi ui",
+    "build-prd": "cross-env NODE_ENV=\"production\" umi build",
     "server": "cross-env NODE_ENV=\"test\" forever start app.js",
     "server-prd": "cross-env NODE_ENV=\"production\" forever start app.js",
     "stop": "forever stop app.js"
