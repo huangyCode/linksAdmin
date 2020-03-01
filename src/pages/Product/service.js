@@ -1,6 +1,10 @@
 import request from '@/utils/fetch';
 
 export async function queryRule(params) {
+  if (params.name) {
+    params.productName = params.name;
+    delete params.name;
+  }
   let data = { page: params.current, size: params.pageSize, ...params };
   delete data.current;
   delete data.pageSize;

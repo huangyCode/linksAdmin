@@ -135,11 +135,11 @@ const Order = () => {
       valueEnum: {
         0: {
           text: '未支付',
-          status: 'Success',
+          status: 'Processing',
         },
         1: {
           text: '已支付',
-          status: 'Processing',
+          status: 'Success',
         },
         2: {
           text: '已退款',

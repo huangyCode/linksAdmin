@@ -22,14 +22,7 @@ const CreateForm = props => {
         onCancel();
       }}
     >
-      <Form
-        form={form}
-        initialValues={{
-          name: props.values.name || '',
-          weight: props.values.weight || '',
-          status: props.values.status,
-        }}
-      >
+      <Form form={form} initialValues={props.values}>
         <FormItem
           labelCol={{
             span: 5,

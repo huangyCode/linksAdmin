@@ -94,6 +94,7 @@ const ProductUser = () => {
     {
       title: '英文名',
       dataIndex: 'enName',
+      hideInSearch: true,
     },
     {
       title: '商品图',

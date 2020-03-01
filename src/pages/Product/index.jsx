@@ -84,11 +84,13 @@ const Product = () => {
   const getBrand = async () => {
     let res = await queryBrand();
     let obj = {};
-    for (let item of res) {
-      obj[item.id] = item.name;
+    if (res && res.length) {
+      for (let item of res) {
+        obj[item.id] = item.name;
+      }
+      setBrandEum(obj);
+      setBrands(res);
     }
-    setBrandEum(obj);
-    setBrands(res);
   };
   const getClasses = async () => {
     let res = await classesList();

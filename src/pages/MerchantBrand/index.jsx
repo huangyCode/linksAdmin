@@ -1,11 +1,12 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, message } from 'antd';
+import { Button, Divider, message, Modal } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, updateRule, addRule, removeRule } from './service';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 /**
  * 添加节点
@@ -64,11 +65,25 @@ const handleRemove = async uid => {
   }
 };
 
+const { confirm } = Modal;
 const MerchantBand = () => {
   const [createModalVisible, handleModalVisible] = useState(false);
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef();
+  const showDeleteConfirm = id => {
+    confirm({
+      title: '删除',
+      icon: <ExclamationCircleOutlined />,
+      content: '确定删除该商户吗',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        handleRemove(id);
+      },
+    });
+  };
   const columns = [
     {
       title: '品牌名',
@@ -137,14 +152,6 @@ const MerchantBand = () => {
             }}
           >
             修改
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={() => {
-              handleRemove(record);
-            }}
-          >
-            删除
           </a>
         </>
       ),
