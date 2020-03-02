@@ -70,7 +70,9 @@ const CreateForm = props => {
             ? '订单完成'
             : values.status == 5
             ? '用户已取消'
-            : '商家已取消'}
+            : values.status == 6
+            ? '商家已取消'
+            : '未支付取消'}
         </span>
         {values.payStatus == 1 &&
         (values.status == 0 || values.status == 1 || values.status == 2 || values.status == 3) ? (
@@ -86,7 +88,8 @@ const CreateForm = props => {
               : ''}
           </Button>
         ) : null}
-        {values.payStatus == 1 && !(values.status == 5 || values.status == 6) ? (
+        {values.payStatus == 1 &&
+        !(values.status == 5 || values.status == 6 || values.status == 7) ? (
           <Button style={{ marginLeft: 10 }} type="primary" onClick={cancelhandle}>
             退款取消订单
           </Button>

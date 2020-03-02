@@ -99,6 +99,10 @@ const Order = () => {
           text: '支付后商家取消',
           status: 'Error',
         },
+        7: {
+          text: '未支付取消',
+          status: 'Error',
+        },
       },
     },
     // 0 已支付 1 未支付 2 已退款 3 取消支付
