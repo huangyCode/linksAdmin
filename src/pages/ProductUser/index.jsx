@@ -5,7 +5,15 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule, updateStatus, classesList, updateVerifyStatus } from './service';
+import {
+  queryRule,
+  updateRule,
+  addRule,
+  removeRule,
+  updateStatus,
+  classesList,
+  updateVerifyStatus,
+} from './service';
 
 /**
  * 添加节点
@@ -90,6 +98,10 @@ const ProductUser = () => {
   useEffect(() => {
     getClasses();
   }, []);
+  const setStatus = async param => {
+    await updateStatus(param);
+    actionRef.current.reload();
+  };
   const columns = [
     {
       title: '商品名',
@@ -189,14 +201,28 @@ const ProductUser = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <a
+          <Button
             onClick={() => {
               setStepFormValues(record);
               handleUpdateModalVisible(true);
             }}
           >
             修改
-          </a>
+          </Button>
+          {record.verifyStatus === 1 ? (
+            <Button
+              type={'primary'}
+              danger={record.status === 1}
+              onClick={() =>
+                setStatus({
+                  productId: record.id,
+                  status: record.status === 1 ? 2 : 1,
+                })
+              }
+            >
+              {record.status === 1 ? '下架' : '上架'}
+            </Button>
+          ) : null}
         </>
       ),
     },
@@ -242,9 +268,6 @@ const ProductUser = () => {
         <UpdateForm
           onSubmit={async value => {
             const success = await handleUpdate(value);
-            if (stepFormValues.status != value.status){
-              await updateStatus({productId:value.id,status:value.status})
-            }
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});

@@ -23,10 +23,9 @@ const CreateForm = props => {
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
-    if (fieldsValue.status == 1 && props.values.status == 1) {
+    if (props.values.status == 1) {
       return message.error('修改商品需把状态跳转为下架！');
     }
-    fieldsValue.verifyStatus = 0;
     fieldsValue.id = props.values.id;
     fieldsValue.picUrl = picUrl;
     form.resetFields();
@@ -188,22 +187,6 @@ const CreateForm = props => {
                     </Option>
                   );
               })}
-          </Select>
-        </FormItem>
-        <FormItem
-          labelCol={{
-            span: 5,
-          }}
-          wrapperCol={{
-            span: 15,
-          }}
-          label="开启状态"
-          name="status"
-        >
-          <Select disabled={flag}>
-            <Option value={0}>新建</Option>
-            <Option value={1}>上架</Option>
-            <Option value={2}>下架</Option>
           </Select>
         </FormItem>
         <FormItem
