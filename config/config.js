@@ -108,28 +108,28 @@ export default {
             {
               path: '/customer',
               name: '用户列表',
-              icon: 'smile',
+              icon: 'TeamOutlined',
               component: './Customer',
               authority: ['admin'],
             },
             {
               path: '/account',
               name: '账户管理',
-              icon: 'smile',
+              icon: 'ContactsOutlined',
               component: './Account',
               authority: ['admin'],
             },
             {
               path: '/brand',
               name: '品牌管理',
-              icon: 'smile',
+              icon: 'ShopOutlined',
               component: './MerchantBrand',
               authority: ['admin'],
             },
             {
               path: '/product',
               name: '商品管理',
-              icon: 'smile',
+              icon: 'ShoppingOutlined',
               children: [
                 {
                   path: '/product/goods',
@@ -145,21 +145,21 @@ export default {
             {
               path: '/order',
               name: '订单列表',
-              icon: 'smile',
+              icon: 'PayCircleOutlined',
               component: './Order',
               authority: ['admin'],
             },
             {
               path: '/orderuser',
               name: '订单列表',
-              icon: 'smile',
+              icon: 'PayCircleOutlined',
               component: './OrderUser',
               authority: ['user'],
             },
             {
               path: '/productuser',
               name: '商品列表',
-              icon: 'smile',
+              icon: 'ShoppingOutlined',
               component: './ProductUser',
               authority: ['user'],
             },

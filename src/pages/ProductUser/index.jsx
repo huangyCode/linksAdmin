@@ -5,7 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, addRule, removeRule, queryBrand, classesList } from './service';
+import { queryRule, updateRule, addRule, removeRule, updateStatus, classesList, updateVerifyStatus } from './service';
 
 /**
  * 添加节点
@@ -155,7 +155,7 @@ const ProductUser = () => {
     },
     {
       title: '审核状态',
-      dataIndex: 'status',
+      dataIndex: 'verifyStatus',
       valueEnum: {
         0: {
           text: '待审批',
@@ -242,7 +242,9 @@ const ProductUser = () => {
         <UpdateForm
           onSubmit={async value => {
             const success = await handleUpdate(value);
-
+            if (stepFormValues.status != value.status){
+              await updateStatus({productId:value.id,status:value.status})
+            }
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});

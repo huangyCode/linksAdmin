@@ -23,7 +23,7 @@ const CreateForm = props => {
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
-    if (fieldsValue.verifyStatus == 1 && props.values.status == 1) {
+    if (fieldsValue.status == 1 && props.values.status == 1) {
       return message.error('修改商品需把状态跳转为下架！');
     }
     fieldsValue.verifyStatus = 0;

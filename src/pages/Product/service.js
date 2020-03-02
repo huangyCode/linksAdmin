@@ -59,3 +59,17 @@ export async function updateRule(params) {
     data: { ...params },
   });
 }
+
+export async function updateStatus(params){
+  return request('/product/onOffShelve', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
+
+export async function updateVerifyStatus(params){
+  return request('/product/audit', {
+    method: 'POST',
+    data: { ...params },
+  });
+}

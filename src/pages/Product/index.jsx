@@ -1,7 +1,7 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import {DownOutlined, PlusOutlined} from '@ant-design/icons';
+import {Button, message} from 'antd';
+import React, {useState, useRef, useEffect} from 'react';
+import {PageHeaderWrapper} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -13,6 +13,8 @@ import {
   queryBrand,
   classesList,
   check,
+  updateVerifyStatus,
+  updateStatus
 } from './service';
 import MD5 from '@/utils/MD5';
 
@@ -102,7 +104,7 @@ const Product = () => {
   };
 
   const audit = async ids => {
-    await check({ ids, verifyStatus: 1 });
+    await check({ids, verifyStatus: 1});
     if (actionRef.current) {
       actionRef.current.reload();
     }
@@ -136,7 +138,7 @@ const Product = () => {
       dataIndex: 'picUrl',
       render: (_, record) => (
         <>
-          <img src={_} style={{ height: 60, width: 60 }} />
+          <img src={_} style={{height: 60, width: 60}}/>
         </>
       ),
       hideInSearch: true,
@@ -214,16 +216,14 @@ const Product = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => (
-        <>
-          <a
-            onClick={() => {
-              setStepFormValues(record);
-              handleUpdateModalVisible(true);
-            }}
-          >
-            修改
-          </a>
-        </>
+        <Button
+          onClick={() => {
+            setStepFormValues(record);
+            handleUpdateModalVisible(true);
+          }}
+        >
+          修改
+        </Button>
       ),
     },
   ];
@@ -233,7 +233,7 @@ const Product = () => {
         headerTitle="商品列表"
         actionRef={actionRef}
         rowKey={record => record.id}
-        toolBarRender={(action, { selectedRows }) => [
+        toolBarRender={(action, {selectedRows}) => [
           <Button
             type="primary"
             onClick={() => {
@@ -296,8 +296,13 @@ const Product = () => {
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
           onSubmit={async value => {
-            const success = await handleUpdate(value);
-
+            let success = await handleUpdate(value)
+            if (stepFormValues.status != value.status){
+              await updateStatus({productId:value.id,status:value.status})
+            }
+            if (stepFormValues.verifyStatus != value.verifyStatus){
+              await updateVerifyStatus({productId:value.id,verifyStatus:value.verifyStatus})
+            }
             if (success) {
               handleModalVisible(false);
               setStepFormValues({});
