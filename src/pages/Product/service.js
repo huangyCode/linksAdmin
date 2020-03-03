@@ -53,6 +53,12 @@ export async function check(params) {
     data: { ...params },
   });
 }
+export async function shelve(params) {
+  return request('/product/batchOnOffShelve', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
 export async function updateRule(params) {
   return request('/product/update', {
     method: 'POST',

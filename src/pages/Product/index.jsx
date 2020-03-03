@@ -1,7 +1,7 @@
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
-import React, { useState, useRef, useEffect } from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import {DownOutlined, PlusOutlined} from '@ant-design/icons';
+import {Button, message} from 'antd';
+import React, {useState, useRef, useEffect} from 'react';
+import {PageHeaderWrapper} from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
@@ -15,9 +15,10 @@ import {
   check,
   updateVerifyStatus,
   updateStatus,
+  shelve
 } from './service';
 import MD5 from '@/utils/MD5';
-import { ColumnsState } from '@ant-design/pro-table/lib/Table';
+import {ColumnsState} from '@ant-design/pro-table/lib/Table';
 
 /**
  * 添加节点
@@ -105,7 +106,7 @@ const Product = () => {
   };
 
   const audit = async ids => {
-    await check({ ids, verifyStatus: 1 });
+    await check({ids, verifyStatus: 1});
     if (actionRef.current) {
       actionRef.current.reload();
     }
@@ -136,7 +137,7 @@ const Product = () => {
       dataIndex: 'picUrl',
       render: (_, record) => (
         <>
-          <img src={_} style={{ height: 60, width: 60 }} />
+          <img src={_} style={{height: 60, width: 60}}/>
         </>
       ),
       hideInSearch: true,
@@ -230,11 +231,11 @@ const Product = () => {
   return (
     <PageHeaderWrapper>
       <ProTable
-        scroll={{ x: 1800 }}
+        scroll={{x: 1800}}
         headerTitle="商品列表"
         actionRef={actionRef}
         rowKey={record => record.id}
-        toolBarRender={(action, { selectedRows }) => [
+        toolBarRender={(action, {selectedRows}) => [
           <Button
             type="primary"
             onClick={() => {
@@ -255,6 +256,25 @@ const Product = () => {
               }}
             >
               批量审核通过
+            </Button>
+          ),
+          selectedRows && selectedRows.length > 0 && (
+            <Button
+              onClick={async () => {
+                let productIds = [];
+                for (let item of selectedRows) {
+                  if (item.verifyStatus === 1 && item.status !== 1)
+                    productIds.push(item.id);
+                }
+                if (productIds.length) {
+                  await shelve({productIds, status: 1});
+                  if (actionRef.current) {
+                    actionRef.current.reload();
+                  }
+                }
+              }}
+            >
+              批量上架
             </Button>
           ),
         ]}
@@ -298,10 +318,10 @@ const Product = () => {
         <UpdateForm
           onSubmit={async value => {
             if (stepFormValues.status != value.status) {
-              await updateStatus({ productId: value.id, status: value.status });
+              await updateStatus({productId: value.id, status: value.status});
             }
             if (stepFormValues.verifyStatus != value.verifyStatus) {
-              await updateVerifyStatus({ productId: value.id, verifyStatus: value.verifyStatus });
+              await updateVerifyStatus({productId: value.id, verifyStatus: value.verifyStatus});
             }
             let success = await handleUpdate(value);
             if (success) {

@@ -5,7 +5,7 @@ export async function queryRule(params) {
     params.productName = params.name;
     delete params.name;
   }
-  let data = { page: params.current, size: params.pageSize, ...params };
+  let data = {page: params.current, size: params.pageSize, ...params};
   delete data.current;
   delete data.pageSize;
   data.brandId = localStorage.getItem('brandId'); // auto reload
@@ -37,35 +37,42 @@ export async function classesList() {
 export async function removeRule(uid) {
   return request('/account/delete', {
     method: 'GET',
-    params: { uid },
+    params: {uid},
   });
 }
 
 export async function addRule(params) {
   return request('/product/add', {
     method: 'POST',
-    data: { ...params },
+    data: {...params},
   });
 }
 
 export async function updateRule(params) {
   return request('/product/update', {
     method: 'POST',
-    data: { ...params },
+    data: {...params},
   });
 }
 
-export async function updateStatus(params){
+export async function updateStatus(params) {
   return request('/product/onOffShelve', {
     method: 'POST',
-    data: { ...params },
+    data: {...params},
   });
 }
 
-export async function updateVerifyStatus(params){
+export async function updateVerifyStatus(params) {
   return request('/product/audit', {
     method: 'POST',
-    data: { ...params },
+    data: {...params},
+  });
+}
+
+export async function shelve(params) {
+  return request('/product/batchOnOffShelve', {
+    method: 'POST',
+    data: {...params},
   });
 }
 

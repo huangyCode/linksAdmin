@@ -14,6 +14,7 @@ import {
   classesList,
   updateVerifyStatus,
 } from './service';
+import {shelve} from "../Product/service";
 
 /**
  * 添加节点
@@ -231,7 +232,7 @@ const ProductUser = () => {
         headerTitle="商品列表"
         actionRef={actionRef}
         rowKey={record => record.id}
-        toolBarRender={() => [
+        toolBarRender={(action, {selectedRows}) => [
           <Button
             type="primary"
             onClick={() => {
@@ -240,10 +241,43 @@ const ProductUser = () => {
           >
             新建商品
           </Button>,
+          selectedRows && selectedRows.length > 0 && (
+            <Button
+              onClick={async () => {
+                let productIds = [];
+                for (let item of selectedRows) {
+                  if (item.verifyStatus === 1 && item.status !== 1)
+                    productIds.push(item.id);
+                }
+                if (productIds.length) {
+                  await shelve({productIds, status: 1});
+                  if (actionRef.current) {
+                    actionRef.current.reload();
+                  }
+                }
+              }}
+            >
+              批量上架
+            </Button>
+          ),
         ]}
+        tableAlertRender={(selectedRowKeys, selectedRows) => (
+          <div>
+            已选择{' '}
+            <a
+              style={{
+                fontWeight: 600,
+              }}
+            >
+              {selectedRowKeys.length}
+            </a>{' '}
+            项
+          </div>
+        )}
         request={params => queryRule(params)}
         columns={columns}
         onSubmit={onSubmit}
+        rowSelection={{}}
       />
       <CreateForm
         onSubmit={async value => {

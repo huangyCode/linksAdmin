@@ -65,9 +65,16 @@ const Order = () => {
     }
     queryRule(params);
   };
+  const timer = () => {
+    setTimeout(() => {
+      actionRef.current.reload();
+      if (location.pathname === '/order') timer();
+    }, 120000);
+  };
   useEffect(() => {
     getBrand();
     getClasses();
+    timer();
   }, []);
   const columns = [
     {

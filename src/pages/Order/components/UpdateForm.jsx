@@ -3,6 +3,7 @@ import { Icon, Drawer, Row, Col, Button } from 'antd';
 
 const CreateForm = props => {
   const { updateModalVisible, onSubmit, onCancel, values } = props;
+  const { orderAddress } = values
   let [setStatus] = useState(values.status);
 
   const okHandle = async () => {
@@ -30,8 +31,10 @@ const CreateForm = props => {
       <div>下单店铺：{values.brandName}</div>
       <div>订单编号：{values.code}</div>
       <div>下单时间：{values.createTime}</div>
-      <div>下单用户：{values.buyerName}</div>
-      <div>用户电话：{values.buyerPhone}</div>
+      <div>下单用户：{orderAddress.contactUser}</div>
+      <div>用户电话：{orderAddress.phone}</div>
+      <div>收货地址：{orderAddress.province + ' ' + orderAddress.city + ' '+ orderAddress.area}</div>
+      <div>详细地址：{orderAddress.addressDetail}</div>
       <div>
         支付状态：
         {values.payStatus == 0

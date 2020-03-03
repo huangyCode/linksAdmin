@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, updateRule, classesList, detail } from './service';
+import { router } from 'umi';
 
 /**
  * 更新节点
@@ -40,8 +41,16 @@ const Order = () => {
   const onSubmit = async params => {
     queryRule(params);
   };
+
+  const timer = () => {
+    setTimeout(() => {
+      actionRef.current.reload();
+      if (location.pathname === '/orderuser') timer();
+    }, 120000);
+  };
   useEffect(() => {
     getClasses();
+    timer();
   }, []);
   const columns = [
     {
