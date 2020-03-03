@@ -38,8 +38,6 @@ const Order = () => {
     setClasses(res);
   };
   const onSubmit = async params => {
-    params.page = 1;
-    params.size = 10;
     queryRule(params);
   };
   useEffect(() => {

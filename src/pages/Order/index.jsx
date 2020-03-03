@@ -63,8 +63,6 @@ const Order = () => {
       params.brandId = params.brandName;
       delete params.brandName;
     }
-    params.page = 1;
-    params.size = 10;
     queryRule(params);
   };
   useEffect(() => {

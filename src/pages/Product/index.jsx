@@ -17,6 +17,7 @@ import {
   updateStatus,
 } from './service';
 import MD5 from '@/utils/MD5';
+import { ColumnsState } from '@ant-design/pro-table/lib/Table';
 
 /**
  * 添加节点
@@ -114,9 +115,6 @@ const Product = () => {
       params.brandId = params.brandName;
       delete params.brandName;
     }
-    params.page = 1;
-    params.size = 10;
-    console.log(params);
     queryRule(params);
   };
   useEffect(() => {
@@ -215,6 +213,8 @@ const Product = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
+      width: 100,
       render: (_, record) => (
         <Button
           onClick={() => {
@@ -230,6 +230,7 @@ const Product = () => {
   return (
     <PageHeaderWrapper>
       <ProTable
+        scroll={{ x: 1800 }}
         headerTitle="商品列表"
         actionRef={actionRef}
         rowKey={record => record.id}
