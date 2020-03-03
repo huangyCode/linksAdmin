@@ -61,8 +61,6 @@ const CreateForm = props => {
       <div style={{ marginBottom: 10 }}>备注：{values.desc || '暂无信息'}</div>
       <div>
         <span>
-          {values.payStatus}
-          {values.status}
           订单状态：
           {values.status == 0
             ? '等待商家确认'
