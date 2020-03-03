@@ -58,6 +58,8 @@ const CreateForm = props => {
       <div style={{ marginBottom: 10 }}>备注：{values.desc || '暂无信息'}</div>
       <div>
         <span>
+          {values.payStatus}
+          {values.status}
           订单状态：
           {values.status == 0
             ? '等待商家确认'
@@ -75,8 +77,8 @@ const CreateForm = props => {
             ? '商家已取消'
             : '未支付取消'}
         </span>
-        {values.payStatus == 0 &&
-        (values.status == 1 || values.status == 1 || values.status == 2 || values.status == 3) ? (
+        {values.payStatus == 1 &&
+        (values.status == 0 || values.status == 1 || values.status == 2 || values.status == 3) ? (
           <Button style={{ marginLeft: 10 }} type="primary" onClick={okHandle}>
             {values.status == 0
               ? '商家接单'
