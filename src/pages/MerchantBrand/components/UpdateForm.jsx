@@ -147,6 +147,24 @@ const UpdateForm = props => {
           wrapperCol={{
             span: 15,
           }}
+          label="品牌联系方式"
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: '不能为空',
+            },
+          ]}
+        >
+          <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
           label="描述"
           name="desc"
           rules={[
