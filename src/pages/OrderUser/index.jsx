@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
@@ -111,6 +111,31 @@ const Order = () => {
           status: 'Error',
         },
       },
+      render: (_, record) => (
+        <>
+          {_}
+          {record.status == 0 || record.status == 1 || record.status == 2 || record.status == 3 ? (
+            <Button
+              style={{ marginLeft: 10 }}
+              type="primary"
+              onClick={async () => {
+                let param = { orderCode: record.code, status: Number(record.status) + 1 };
+                const success = await handleUpdate(param);
+                if (success) {
+                  handleUpdateModalVisible(false);
+                  setStepFormValues({});
+
+                  if (actionRef.current) {
+                    actionRef.current.reload();
+                  }
+                }
+              }}
+            >
+              下一步
+            </Button>
+          ) : null}
+        </>
+      ),
     },
     // 0 已支付 1 未支付 2 已退款 3 取消支付
     {
