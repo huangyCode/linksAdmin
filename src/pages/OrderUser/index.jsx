@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, updateRule, classesList, detail } from './service';
 import { router } from 'umi';
+import ding from '../../assets/ding.mp3';
 
 /**
  * 更新节点
@@ -33,6 +34,8 @@ const Order = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
+  const [dingFlag, setDingFlag] = useState(false);
+
   const actionRef = useRef();
   const getClasses = async () => {
     let res = await classesList();
@@ -46,7 +49,7 @@ const Order = () => {
     setTimeout(() => {
       actionRef.current.reload();
       if (location.pathname === '/orderuser') timer();
-    }, 120000);
+    }, 30000);
   };
   useEffect(() => {
     getClasses();
@@ -197,6 +200,16 @@ const Order = () => {
         actionRef={actionRef}
         rowKey={record => record.id}
         request={params => queryRule(params)}
+        postData={data => {
+          if (data && data.length && data[0].payStatus == 1 && data[0].status == 0) {
+            setDingFlag(true);
+            console.log(1111);
+            setTimeout(() => {
+              setDingFlag(false);
+            }, 4000);
+          }
+          return data;
+        }}
         columns={columns}
         onSubmit={onSubmit}
       />
@@ -223,6 +236,7 @@ const Order = () => {
           values={stepFormValues}
         />
       ) : null}
+      {dingFlag ? <audio src={ding} autoPlay={true}></audio> : null}
     </PageHeaderWrapper>
   );
 };
