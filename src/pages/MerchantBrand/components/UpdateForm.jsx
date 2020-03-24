@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Modal, Select, InputNumber, TimePicker, Icon, Upload, message } from 'antd';
 import moment from 'moment';
 import domain from '../../../../config/conf';
+import Bmap from './Bmap';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -21,9 +22,17 @@ function beforeUpload(file) {
 const UpdateForm = props => {
   const [form] = Form.useForm();
   const { updateModalVisible, onSubmit, onCancel, values } = props;
+  let brandAddress = values.brandAddress || {};
   let [picUrl, setPicUrl] = useState(values.picUrl);
   let [openTime, setOpenTime] = useState(values.openTime);
   let [closeTime, setCloseTime] = useState(values.closeTime);
+  let [stationName, setStationName] = useState(brandAddress.stationName || '');
+  let [pos, setPos] = useState({
+    point: { lng: brandAddress.lng || '', lat: brandAddress.lat || '' },
+    address: brandAddress.stationAddress || '',
+  });
+  let [contactName, setContactName] = useState(brandAddress.contactName || '');
+  let [mobile, setMobile] = useState(brandAddress.mobile || '');
 
   const okHandle = async () => {
     const fieldsValue = await form.validateFields();
@@ -32,6 +41,27 @@ const UpdateForm = props => {
     fieldsValue.openTime = openTime;
     fieldsValue.closeTime = closeTime;
     fieldsValue.id = values.id;
+    if (!pos || !pos.address) {
+      return message.error('请在地图上选择的店铺地址');
+    }
+    if (!contactName) {
+      return message.error('请填写店铺联系人信息');
+    }
+    if (!stationName) {
+      return message.error('请填写店铺名');
+    }
+    if (!mobile) {
+      return message.error('请填写店铺联系人电话');
+    }
+    fieldsValue.brandAddress = {
+      stationName,
+      cityName: pos.addressComponents && pos.addressComponents.city,
+      areaName: pos.addressComponents && pos.addressComponents.district,
+      stationAddress: pos.address,
+      contactName,
+      lng: (pos && pos.point && pos.point.lng) || '',
+      lat: (pos && pos.point && pos.point.lat) || '',
+    };
     onSubmit(fieldsValue);
   };
 
@@ -41,11 +71,9 @@ const UpdateForm = props => {
     }
   };
   const onOpenChange = (e, timeString) => {
-    console.log(timeString);
     setOpenTime(timeString);
   };
   const onCloseChange = (e, timeString) => {
-    console.log(timeString);
     setCloseTime(timeString);
   };
   const uploadButton = (
@@ -54,6 +82,12 @@ const UpdateForm = props => {
       <div className="ant-upload-text">Upload</div>
     </div>
   );
+  const changeShopName = ({ target: { value } }) => {
+    setStationName(value);
+  };
+  const changeName = ({ target: { value } }) => {
+    setContactName(value);
+  };
   return (
     <Modal
       destroyOnClose
@@ -80,6 +114,95 @@ const UpdateForm = props => {
           ]}
         >
           <Input placeholder="请输入" />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="位置"
+        >
+          <Bmap
+            value={pos}
+            onChange={(pos, stationName) => {
+              console.log(pos);
+              setPos(pos);
+              setStationName(stationName);
+            }}
+          />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="经度"
+        >
+          <Input disabled value={(pos && pos.point && pos.point.lng) || ''} />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="纬度"
+        >
+          <Input disabled value={(pos && pos.point && pos.point.lat) || ''} />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="店铺名称"
+        >
+          <Input placeholder="请输入" value={stationName} onChange={changeShopName} />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="店铺详细地址"
+        >
+          <Input disabled value={(pos && pos.address) || ''} />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="店铺联系人"
+        >
+          <Input value={contactName} onChange={changeName} />
+        </FormItem>
+        <FormItem
+          labelCol={{
+            span: 5,
+          }}
+          wrapperCol={{
+            span: 15,
+          }}
+          label="店铺联系人电话"
+        >
+          <Input
+            value={mobile}
+            onChange={({ target: { value } }) => {
+              setMobile(value);
+            }}
+          />
         </FormItem>
         <FormItem
           labelCol={{

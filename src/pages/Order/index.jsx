@@ -4,7 +4,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, queryBrand, classesList, check, detail } from './service';
+import {
+  queryRule,
+  updateRule,
+  queryBrand,
+  classesList,
+  check,
+  detail,
+  getReason,
+  sendReason,
+} from './service';
 
 /**
  * 更新节点
@@ -35,6 +44,7 @@ const Order = () => {
   const [brands, setBrands] = useState([]);
   const [brandEum, setBrandEum] = useState({});
   const [classes, setClasses] = useState([]);
+  const [reason, setReason] = useState([]);
   const actionRef = useRef();
   const getBrand = async () => {
     let res = await queryBrand();
@@ -71,9 +81,21 @@ const Order = () => {
       if (location.pathname === '/order') timer();
     }, 120000);
   };
+  const reasonList = async () => {
+    let res = await getReason();
+    setReason(res.data);
+  };
+  const cancel = async param => {
+    let res = await sendReason(param);
+    if (res.code === 200) {
+      let res = await detail({ orderCode: param.orderCode });
+      setStepFormValues(res.data || {});
+    }
+  };
   useEffect(() => {
     getBrand();
     getClasses();
+    reasonList();
     timer();
   }, []);
   const columns = [
@@ -101,6 +123,28 @@ const Order = () => {
       title: '购买电话',
       dataIndex: 'buyerPhone',
       hideInSearch: true,
+    },
+    {
+      title: '取餐状态',
+      dataIndex: 'deliverType',
+      valueEnum: {
+        0: {
+          text: '外卖订单',
+          status: 'Processing',
+        },
+        1: {
+          text: '到点取餐',
+          status: 'Success',
+        },
+        2: {
+          text: '商家配送',
+          status: 'Processing',
+        },
+        3: {
+          text: '达达配送',
+          status: 'Processing',
+        },
+      },
     },
     //0 等待商家确认 1已接单 2做酒完成 3配送中 4 订单完成 5 已取消 6 支付后商家取消
     {
@@ -197,7 +241,7 @@ const Order = () => {
   return (
     <PageHeaderWrapper>
       <ProTable
-        headerTitle="商品列表"
+        headerTitle="订单列表"
         actionRef={actionRef}
         rowKey={record => record.id}
         request={params => queryRule(params)}
@@ -206,6 +250,7 @@ const Order = () => {
       />
       {stepFormValues && Object.keys(stepFormValues).length ? (
         <UpdateForm
+          reason={reason}
           onSubmit={async value => {
             const success = await handleUpdate(value);
 
@@ -219,6 +264,7 @@ const Order = () => {
             }
           }}
           brands={brands}
+          cancel={cancel}
           onCancel={() => {
             handleUpdateModalVisible(false);
             setStepFormValues({});

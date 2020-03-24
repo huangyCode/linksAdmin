@@ -1,13 +1,14 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Button } from 'antd';
+import { message, Button, Select } from 'antd';
 import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
-import { queryRule, updateRule, classesList, detail } from './service';
+import { queryRule, updateRule, classesList, detail, getReason, sendReason } from './service';
 import { router } from 'umi';
 import ding from '../../assets/ding.mp3';
 
+const { Option } = Select;
 /**
  * 更新节点
  * @param fields
@@ -35,6 +36,9 @@ const Order = () => {
   const [updateModalVisible, handleUpdateModalVisible] = useState(false);
   const [classes, setClasses] = useState([]);
   const [dingFlag, setDingFlag] = useState(false);
+  const [reason, setReason] = useState([]);
+  const [rowDeliverType, setRowDeliverType] = useState(0);
+  const [openId, setOpenId] = useState(0);
 
   const actionRef = useRef();
   const getClasses = async () => {
@@ -44,15 +48,26 @@ const Order = () => {
   const onSubmit = async params => {
     queryRule(params);
   };
-
+  const cancel = async param => {
+    let res = await sendReason(param);
+    if (res.code === 200) {
+      let res = await detail({ orderCode: param.orderCode });
+      setStepFormValues(res.data || {});
+    }
+  };
   const timer = () => {
     setTimeout(() => {
       actionRef.current.reload();
       if (location.pathname === '/orderuser') timer();
     }, 30000);
   };
+  const reasonList = async () => {
+    let res = await getReason();
+    setReason(res.data);
+  };
   useEffect(() => {
     getClasses();
+    reasonList();
     timer();
   }, []);
   const columns = [
@@ -114,31 +129,72 @@ const Order = () => {
           status: 'Error',
         },
       },
-      render: (_, record) => (
-        <>
-          {_}
-          {record.status == 0 || record.status == 1 || record.status == 2 || record.status == 3 ? (
-            <Button
-              style={{ marginLeft: 10 }}
-              type="primary"
-              onClick={async () => {
-                let param = { orderCode: record.code, status: Number(record.status) + 1 };
-                const success = await handleUpdate(param);
-                if (success) {
-                  handleUpdateModalVisible(false);
-                  setStepFormValues({});
+      render: (_, record) => {
+        let deliverType = record.deliverType;
+        return (
+          <>
+            {_}
+            {record.status == 0 ||
+            record.status == 1 ||
+            record.status == 2 ||
+            record.status == 3 ? (
+              <>
+                {record.deliverType != 1 ? (
+                  <Select
+                    defaultValue={record.status == 0 ? '配送方式' : deliverType}
+                    disabled={record.status != 0}
+                    style={{ width: 100 }}
+                    onChange={value => {
+                      deliverType = value;
+                      setRowDeliverType(value);
+                      setOpenId(record.id);
+                    }}
+                  >
+                    <Option value={2}>自行配送</Option>
+                    <Option value={3}>达达配送</Option>
+                  </Select>
+                ) : null}
+                <Button
+                  style={{ marginLeft: 10 }}
+                  type="primary"
+                  onClick={async () => {
+                    if (record.deliverType == 0 && !rowDeliverType) {
+                      return message.error('请选择配送方式');
+                    }
+                    if (record.deliverType == 0 && openId != record.id) {
+                      return message.error('请先操作您之前修改的条目');
+                    }
+                    let obj = { orderCode: record.code };
+                    if (record.deliverType == 0 && openId == record.id && rowDeliverType) {
+                      obj.deliverType = rowDeliverType;
+                    } else {
+                      obj.deliverType = record.deliverType;
+                    }
+                    setRowDeliverType(0);
+                    setOpenId(0);
+                    if (obj.deliverType === 1 && record.status == 2) {
+                      obj.status = Number(record.status) + 2;
+                    } else {
+                      obj.status = Number(record.status) + 1;
+                    }
+                    const success = await handleUpdate(obj);
+                    if (success) {
+                      handleUpdateModalVisible(false);
+                      setStepFormValues({});
 
-                  if (actionRef.current) {
-                    actionRef.current.reload();
-                  }
-                }
-              }}
-            >
-              下一步
-            </Button>
-          ) : null}
-        </>
-      ),
+                      if (actionRef.current) {
+                        actionRef.current.reload();
+                      }
+                    }
+                  }}
+                >
+                  下一步
+                </Button>
+              </>
+            ) : null}
+          </>
+        );
+      },
     },
     // 0 已支付 1 未支付 2 已退款 3 取消支付
     {
@@ -196,7 +252,7 @@ const Order = () => {
   return (
     <PageHeaderWrapper>
       <ProTable
-        headerTitle="商品列表"
+        headerTitle="订单列表"
         actionRef={actionRef}
         rowKey={record => record.id}
         request={params => queryRule(params)}
@@ -231,6 +287,8 @@ const Order = () => {
             handleUpdateModalVisible(false);
             setStepFormValues({});
           }}
+          cancel={cancel}
+          reason={reason}
           classes={classes}
           updateModalVisible={updateModalVisible}
           values={stepFormValues}

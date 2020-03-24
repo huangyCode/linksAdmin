@@ -168,6 +168,27 @@ export default {
               component: './Product',
             },
             {
+              path: '/dadaacountuser',
+              component: './DadaAccountUser',
+              authority: ['user'],
+              name: '达达记录',
+              icon: 'DollarCircleOutlined',
+            },
+            {
+              path: '/DadaRecharge',
+              component: './DadaRecharge',
+              authority: ['admin'],
+              name: '达达充值',
+              icon: 'DollarCircleOutlined',
+            },
+            {
+              path: '/dadaacount',
+              component: './DadaAccount',
+              authority: ['admin'],
+              name: '达达记录',
+              icon: 'DollarCircleOutlined',
+            },
+            {
               path: '/product/classes',
               component: './ProductClasses',
             },

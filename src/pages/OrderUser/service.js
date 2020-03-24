@@ -63,3 +63,16 @@ export async function detail(params) {
     data: { ...params },
   });
 }
+
+export async function getReason() {
+  return request('/logistics/dada/getAllOrderCancelReason', {
+    method: 'POST',
+  });
+}
+
+export async function sendReason(params) {
+  return request('/logistics/dada/cancelDeliverByBrand', {
+    method: 'POST',
+    data: { ...params },
+  });
+}
