@@ -133,7 +133,7 @@ const Order = () => {
           status: 'Processing',
         },
         1: {
-          text: '到点取餐',
+          text: '到店取餐',
           status: 'Success',
         },
         2: {
@@ -160,7 +160,7 @@ const Order = () => {
           status: 'Processing',
         },
         2: {
-          text: '做酒完成',
+          text: '配餐完成',
           status: 'Processing',
         },
         3: {

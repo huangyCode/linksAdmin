@@ -6,6 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
 import { queryRule, getQrUrl, checkPay, mineSum } from './service';
 import { WechatOutlined } from '@ant-design/icons';
+
 var QRCode = require('qrcode.react');
 import NumericInput from './components/NumericInput';
 
@@ -94,8 +95,8 @@ const DadaAccountUser = () => {
     let res;
     if (amount) {
       res = await getQrUrl(amount);
-      setQrUrl(res.data);
-      if (res.orderCode) trunList(res.orderCode);
+      setQrUrl(res.code_url);
+      if (res.order_code) trunList(res.order_code);
     } else {
       message.error('请输入金额');
     }
@@ -103,12 +104,13 @@ const DadaAccountUser = () => {
   const trunList = orderCode => {
     setTimeout(async () => {
       let result = await checkPay(orderCode);
-      if (result.data && result.data.status && result.data.status === 1) {
+      console.log(result);
+      if (result && result.status && result.status == 1) {
         onCancel();
         message.success('支付成功');
         return true;
       } else {
-        trunList();
+        if (visible) trunList(orderCode);
         return false;
       }
     }, 500);

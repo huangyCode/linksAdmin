@@ -91,6 +91,28 @@ const Order = () => {
       dataIndex: 'buyerPhone',
       hideInSearch: true,
     },
+    {
+      title: '取餐方式',
+      dataIndex: 'deliverType',
+      valueEnum: {
+        0: {
+          text: '默认外卖',
+          status: 'Default',
+        },
+        1: {
+          text: '到店取餐',
+          status: 'Processing',
+        },
+        2: {
+          text: '自行配送',
+          status: 'Processing',
+        },
+        3: {
+          text: '达达配送',
+          status: 'Processing',
+        },
+      },
+    },
     //0 等待商家确认 1已接单 2做酒完成 3配送中 4 订单完成 5 已取消 6 支付后商家取消
     {
       title: '订单状态',
@@ -105,7 +127,7 @@ const Order = () => {
           status: 'Processing',
         },
         2: {
-          text: '做酒完成',
+          text: '配餐完成',
           status: 'Processing',
         },
         3: {

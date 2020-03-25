@@ -143,7 +143,10 @@ const DadaRecharge = () => {
             <Button
               type="success"
               onClick={async () => {
-                process(record.id, 2);
+                await process(record.id, 2);
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
               }}
             >
               充值完成

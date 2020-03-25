@@ -130,7 +130,9 @@ const CreateForm = props => {
               : values.status == 1
               ? '配餐完成'
               : values.status == 2
-              ? '去配送'
+              ? deliverType == 1
+                ? '用户到店'
+                : '去配送'
               : values.status == 3
               ? '订单完成'
               : ''}
@@ -158,8 +160,10 @@ const CreateForm = props => {
                 {orderDeliveryTraceList.map(value => {
                   return (
                     <Timeline.Item>
-                      {value.statusDesc} {value.dadaUpdateTime} (骑手:{value.dmName}{' '}
-                      {value.dmMobile})
+                      {value.statusDesc} {value.dadaUpdateTime}{' '}
+                      {value.dmName
+                        ? '(' + value.dmId + '号 骑手:' + value.dmName + ' ' + value.dmMobile + ')'
+                        : ''}
                     </Timeline.Item>
                   );
                 })}
