@@ -59,6 +59,7 @@ const UpdateForm = props => {
       areaName: pos.addressComponents && pos.addressComponents.district,
       stationAddress: pos.address,
       contactName,
+      mobile,
       lng: (pos && pos.point && pos.point.lng) || '',
       lat: (pos && pos.point && pos.point.lat) || '',
     };
