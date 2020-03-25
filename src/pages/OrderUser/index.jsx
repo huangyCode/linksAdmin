@@ -46,6 +46,9 @@ const Order = () => {
     setClasses(res);
   };
   const onSubmit = async params => {
+    if (params.code) {
+      params.orderCode = params.code;
+    }
     queryRule(params);
   };
   const cancel = async param => {

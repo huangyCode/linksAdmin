@@ -69,6 +69,9 @@ const Order = () => {
     }
   };
   const onSubmit = async params => {
+    if (params.code) {
+      params.orderCode = params.code;
+    }
     if (params.brandName) {
       params.brandId = params.brandName;
       delete params.brandName;
