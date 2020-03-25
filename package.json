@@ -5,7 +5,11 @@
   "description": "An out-of-box UI solution for enterprise applications",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "cross-env NODE_ENV=\"development\" umi build",
+    "build": "cross-env API_ENV=\"development\" umi build",
+    "build-prd": "cross-env API_ENV=\"production\" umi build",
+    "server": "cross-env NODE_ENV=\"test\" forever start app.js",
+    "server-prd": "cross-env NODE_ENV=\"production\" forever start app.js",
+    "stop": "forever stop app.js",
     "deploy": "npm run site && npm run gh-pages",
     "fetch:blocks": "pro fetch-blocks --branch antd@4 && npm run prettier",
     "format-imports": "cross-env import-sort --write '**/*.{js,jsx,ts,tsx}'",
@@ -19,18 +23,14 @@
     "lint:prettier": "check-prettier lint",
     "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
     "prettier": "prettier -c --write \"**/*\"",
-    "start": "cross-env NODE_ENV=\"development\" umi dev",
+    "start": "cross-env API_ENV=\"development\" umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "start:no-ui": "cross-env UMI_UI=none umi dev",
     "test": "umi test",
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components",
     "tsc": "tsc",
-    "ui": "umi ui",
-    "build-prd": "cross-env NODE_ENV=\"production\" umi build",
-    "server": "cross-env NODE_ENV=\"test\" forever start app.js",
-    "server-prd": "cross-env NODE_ENV=\"production\" forever start app.js",
-    "stop": "forever stop app.js"
+    "ui": "umi ui"
   },
   "husky": {
     "hooks": {
