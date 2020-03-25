@@ -108,6 +108,11 @@ const DadaAccountUser = () => {
       if (result && result.status && result.status == 1) {
         onCancel();
         message.success('支付成功');
+        setTimeout(() => {
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }, 1500);
         return true;
       } else {
         if (visible) trunList(orderCode);
