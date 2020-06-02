@@ -128,7 +128,7 @@ const DadaRecharge = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          {record.platformStatus !== 2 && record.status === 1 ? (
+          {record.platformStatus !== 1 && record.status === 1 ? (
             <Button
               type="primary"
               onClick={async () => {
